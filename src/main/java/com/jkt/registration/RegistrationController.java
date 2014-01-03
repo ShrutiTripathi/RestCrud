@@ -1,0 +1,53 @@
+package com.jkt.registration;
+/*
+* This software is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND.
+*/
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.jkt.registration.service.RegistrationService;
+import com.jkt.registratrion.domain.RegistrationForm;
+
+@Controller
+public class RegistrationController {
+
+	@Autowired
+	private RegistrationService registrationService;
+
+	@RequestMapping(value = "/register/{registrationForm}", method = RequestMethod.POST)
+	public ModelAndView registerUser(final @ModelAttribute RegistrationForm registrationForm) {
+		String str;
+		ModelAndView mav = null;
+		
+		/*final @PathVariable String firstName,
+		@PathVariable String lasttName, @PathVariable String email,
+		@PathVariable String password, @PathVariable String confirmPassword*/
+		
+		try {
+			str = registrationService.registerUser(registrationForm);
+		    mav = new ModelAndView("orderXmlView",
+					BindingResult.MODEL_KEY_PREFIX + "order", str);
+		    System.out.println("See I am Here!!! " + registrationForm.getFirstName());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return mav;
+	}
+
+	/*@RequestMapping(value = "/orderItems", method = RequestMethod.GET)
+	public ModelAndView loadOrderItems() {
+		List<OrderItem> orderItems = orderService.listOrderItems();
+		ModelAndView modelAndView = new ModelAndView("orderXmlView",
+				BindingResult.MODEL_KEY_PREFIX + "orderItem", orderItems);
+		return return return modelAndView;
+	}*/
+
+}
